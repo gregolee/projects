@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <title>Counter</title>
+    <link href="https://fonts.googleapis.com/css?family=Roboto:100,300,400,500,700,900" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/vuetify@2.x/dist/vuetify.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, minimal-ui">
+</head>
+
+<body>
+    <div id="app">
+        <v-app>
+            <v-content>
+                <v-layout align-center column justify-end pa-4>
+                    <h2 class="headline">{{ fishBread.message.welcome }}</h2>
+                    <br>
+                    <subheader>{{ fishBread.message.beforeBake(fishBread.shape, fishBread.getCrunchy(), fishBread.flavor) }}</subheader>
+                    <v-btn @click="fishBread.result = fishBread.bake()">
+                        {{ fishBread.message.pleaseBake }}
+                    </v-btn>
+                </v-layout>
+                <v-layout align-center column justify-center pa-4>
+                    <v-card
+                        class="d-inline-flex justify-center pa-6"
+                        flat
+                        tile
+                    >
+                        <v-color-picker
+                            v-model="fishBread.color"
+                            class="ma-3" 
+                            mode.sync="hexa"
+                            hide-inputs
+                            label="Color"
+                        ></v-color-picker>
+                        <v-layout align-begin column>
+                            <v-slider
+                                v-model="fishBread.temperature"
+                                max="200"
+                                min="50"
+                                color="red"
+                                track-color="yellow"
+                                thumb-label="always"
+                                label="Temperature"
+                            ></v-slider>
+                            <v-autocomplete
+                                v-model="fishBread.shape"
+                                :items="fishBread._shapes"
+                                label="shape"
+                            >
+                            </v-autocomplete>
+                            <v-autocomplete
+                                v-model="fishBread.flavor"
+                                :items="fishBread._flavor"
+                                label="flavor"
+                            >
+                            </v-autocomplete>
+                        </v-layout>
+                    </v-card>
+                </v-layout>
+                <v-layout align-center column justify-end pa-4>
+                    <h1 class="bread">{{ fishBread.result }}</h1>
+                </v-layout>
+            </v-content>
+        </v-app>
+    </div>
+</body>
+
+</html>
+
+<script src="https://cdn.jsdelivr.net/npm/vue@2.x/dist/vue.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/vuetify@2.x/dist/vuetify.js"></script>
+<script src="./fishbread.js"></script>
+<script src="./index.js"></script>
