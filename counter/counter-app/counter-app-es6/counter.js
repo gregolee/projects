@@ -31,18 +31,21 @@ CounterConstructor.prototype.decrement = function(num) {
 
 // 3. Class (Modern / ES2015+ === ES6)
 class CounterClass {
-    constructor({number}) {
-        const _self = this;
-        this.count = number;
+    constructor({ num }) {
+        this.count = num;
+        this.initCount = num;
     }
     getCount() {
         return this.count;
     }
-    increment(num = 1) {
+    increment(num=1) {
         this.count += num * 1;
     }
-    decrement(num = 1) {
+    decrement(num=1) {
         this.count -= num * 1;
+    }
+    reset() {
+        this.count = this.initCount;
     }
 }
 
