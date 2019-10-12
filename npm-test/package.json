@@ -1,0 +1,21 @@
+{
+  "name": "npm-test",
+  "version": "1.0.0",
+  "description": "프로젝트 설명",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "react": "^16.10.2"
+  },
+  "devDependencies": {
+    "prettier": "^1.18.2",
+    "webpack": "^4.41.1",
+    "webpack-cli": "^3.3.9",
+    "webpack-dev-server": "^3.8.2"
+  }
+}
