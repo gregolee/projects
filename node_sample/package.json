@@ -1,0 +1,17 @@
+{
+  "name": "node_sample",
+  "version": "1.0.0",
+  "description": "We Are Super Developers",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start_http": "node ./http_app.js",
+    "start_express": "node ./express_app.js"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "body-parser": "^1.19.0",
+    "express": "^4.17.1"
+  }
+}
