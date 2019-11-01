@@ -13,7 +13,27 @@ let users = [
     }
 ]
 
-exports.index = (req, res) => res.json(users);
+const mysql = require('mysql');
+const connection = mysql.createConnection({
+    host: 'localhost',
+    user: 'node_api',
+    password: 'node_api',
+    port: 3306,
+    database: 'node_test'
+});
+
+exports.index = (req, res) => {
+    let result = {};
+    connection.connect();
+    connection.query('SELECT * FROM tbl_board', function(err, rows, fields) {
+        if(!err)
+            result = res.json(rows);
+        else
+            result = res.json(err);
+    });
+    connection.end();
+    return result;
+};
 
 exports.show = (req, res) => {
     const id = parseInt(req.params.id);
