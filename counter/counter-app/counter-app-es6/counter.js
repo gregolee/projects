@@ -61,3 +61,5 @@ const CounterAppClosure = (function() {
         }
     }
 })();
+
+export default CounterClass;

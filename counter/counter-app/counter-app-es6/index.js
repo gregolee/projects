@@ -1,3 +1,4 @@
+import CounterClass from './counter.js';
 /*
 주석에 달려 있는 내용처럼 활용하면 가독성도 안좋고, 어떤 내용인지 알기 어려워진다.
 따라서 밑의 코드처럼 작성한다.
@@ -66,5 +67,5 @@ function init() {
 }
 
 window.onload = function() {
-   this.init();
+   init();
 }
