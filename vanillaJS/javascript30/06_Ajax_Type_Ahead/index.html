@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Type Ahead 👀</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+  <form class="search-form">
+    <input type="text" class="search" placeholder="City or State">
+    <ul class="suggestions">
+      <li>Filter for a city</li>
+      <li>or a state</li>
+    </ul>
+  </form>
+<script>
+const endpoint = 'https://gist.githubusercontent.com/Miserlou/c5cd8364bf9b2420bb29/raw/2bf258763cdddd704f8ffd3ea9a3e81d25e2c6f6/cities.json';
+const cities = [];
+
+/*
+ *  Fetch API를 이용하면 Request나 Response와 같은 HTTP의 파이프라인을 구성하는 요소를 조작하는것이 가능
+ *  fetch() 메서드를 이용하는 것으로 비동기 네트워크 통신을 알기쉽게 기술할 수 있음
+ *  - 상세 내용은 다음을 참조 : https://developer.mozilla.org/ko/docs/Web/API/Fetch_API/Fetch%EC%9D%98_%EC%82%AC%EC%9A%A9%EB%B2%95
+ */
+const prom = fetch(endpoint);
+console.log(prom);  //이것은 데이터를 리턴시키지 않고, promise를 반환한다.
+
+/*
+ *  아래 코드가 리턴해주는 것은 Response이다. 
+ *  이 객체 내 prototype을 찾다보면 blob의 내용을 찾을 수 있으나 blob이 우리가 원하는 형태의 데이터로 활용할 수 없다.
+ *  따라서 blob을 prototype에 존재하는 json()을 호출하여 데이터로 활용할 수 있도록 변경해준다.
+ *  (상세 사용방법은 Fetch API에서 자세히 설명하고 있으니 참조하길 바람)
+ */
+fetch(endpoint)
+  .then(blob => console.log(blob));
+
+/*
+ *  아래 코드는 수많은 데이터를 보여준다.
+ */
+fetch(endpoint)
+  .then(blob => blob.json())        
+  .then(data => console.log(data));
+
+/*
+ *  cities.push(data) : cities[?] 인 인덱스에 1000개의 배열데이터를 집어 넣는다.
+ *  cities.push(...data) : [ES6] cities의 n ~ n+999 마다 데이터를 push한다.
+ */
+fetch(endpoint)
+  .then(blob => blob.json())        
+  .then(data => cities.push(...data));
+
+function findMatches(wordToMatch, cities) {
+  return cities.filter(place => {
+    // 도시와 주의 명칭이 찾고자하는 문자와 매칭이 되는 경우
+    const regex = new RegExp(wordToMatch, 'gi');
+    return place.city.match(regex) || place.state.match(regex);
+  });
+}
+
+function numberWithCommas(x) {
+  return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+}
+
+function displayMatches() {
+  const matchArray = findMatches(this.value, cities);
+  const html = matchArray.map(place => {
+    const regex = new RegExp(this.value, 'gi');
+    const cityName = place.city.replace(regex, `<span class="hl">${this.value}</span>`);
+    const stateName = place.state.replace(regex, `<span class="hl">${this.value}</span>`);
+    return `
+      <li>
+        <span class="name">${cityName}, ${stateName}</span>
+        <span class="population">${numberWithCommas(place.population)}</span>
+      </li>
+    `;
+  }).join("");
+  suggestions.innerHTML = html;
+}
+
+const searchInput = document.querySelector('.search');
+const suggestions = document.querySelector('.suggestions');
+
+//searchInput.addEventListener('change', displayMatches); //'change'는 해당 input에서 벗어난 경우를 감지한다. 'keyup'으로 하면 키보드로 입력 후 감지한다.
+searchInput.addEventListener('keyup', displayMatches);
+
+</script>
+</body>
+</html>

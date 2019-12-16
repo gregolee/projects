@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>HTML5 Canvas</title>
+</head>
+<body>
+<canvas id="draw" width="800" height="800"></canvas>
+<script>
+
+const canvas = document.querySelector('#draw');
+const ctx = canvas.getContext('2d');    //2d 캔버스
+canvas.width = window.innerWidth;       //캔버스의 너비 설정
+canvas.height = window.innerHeight;     //캔버스의 높이 설정
+ctx.strokeStyle = '#BADA55';    //색상지정
+ctx.lineJoin = 'round';         //잘 모르겠음
+ctx.lineCap = 'round';        //동그랗게 점을 찍음
+ctx.lineWidth = 100;
+ctx.globalCompositeOperation = 'multiply'; //mdn에서 문서로 확인할 수 있다.
+
+let isDrawing = false;
+let lastX = 0;          //마지막 X의 위치
+let lastY = 0;          //마지막 Y의 위치
+let hue = 0;            //색상값
+let direction = true;   //굵기가 커지고 작아지는 방향을 나타냄
+
+function draw(e) {
+    // 마우스 버튼을 누르지 않으면 동작하지 않도록 함
+    if(!isDrawing) return;
+    console.log(e);
+    ctx.strokeStyle = `hsl(${hue}, 100%, 50%)`; //색상을 선택한다.
+    
+    ctx.beginPath();
+    // start from
+    ctx.moveTo(lastX, lastY);
+    // go to
+    ctx.lineTo(e.offsetX, e.offsetY);   //e.offsetX, e.offsetY : 이벤트가 발생한 위치의 좌표
+    ctx.stroke();   // 라인을 그린다.
+    [lastX, lastY] = [e.offsetX, e.offsetY];
+    
+    hue++;
+    if(hue >= 360) {
+        hue = 0;
+    }
+    if(ctx.lineWidth >= 100 || ctx.lineWidth <=1) {
+        direction = !direction;
+    }
+    if(direction) {
+        ctx.lineWidth++;
+    } else {
+        ctx.lineWidth--;
+    }
+}
+
+canvas.addEventListener('mousedown', (e) => {
+    isDrawing = true;
+    [lastX, lastY] = [e.offsetX, e.offsetY];
+});
+canvas.addEventListener('mousemove', draw);
+canvas.addEventListener('mouseup', () => isDrawing = false);
+canvas.addEventListener('mouseout', () => isDrawing = false);
+
+</script>
+
+<style>
+  html, body {
+    margin: 0;
+  }
+</style>
+
+</body>
+</html>
